@@ -14,25 +14,14 @@ let io = socketIO(server);
 
 app.use(express.static(publicPath));
 
-// app.get('/', middle, (req, res) => {
-//     res.send(200);
-// });
-
 io.on('connection', (socket) => {
     console.log('New user connected');
 
-    socket.emit('newMessage', {
-        from: 'Server',
-        text: 'Welcome!',
-        createdAt: 1223453
-    })
-
     socket.on('createMessage', (newMessage) => {
-        console.log('createMessage', newMessage);
-        socket.emit('newMessage', {
+        io.emit('newMessage', {
            from: newMessage.from,
            text: newMessage.text,
-           createdAt: new Date()
+           createdAt: new Date().getTime()
         });
     });
 
